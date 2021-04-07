@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <time.h>
 
 //long long -> –9,223,372,036,854,775,808 ~ 9,223,372,036,854,775,807  -> 사실상 18자리까지만 사용
 //unsigned long long -> 0 ~ 18,446,744,073,709,551,615 -> 18자리 20번째자리는 1밖에 못쓰며, 19번째 자리는 2의 배수가 아니므로 사용하기 애매
@@ -23,10 +24,27 @@
 // 카라츠바에서의 계산: 15000 -> (7500 * 3) + (7500 * 2) == 7500 * 5 ...
 // n / 2 * 3 + (n) -> 5/2 n 추가필요 -> n이 1 혹은 base line이 될 때까지
 
-//계산할바에 그냥 크게 잡고 시작하는 게 좋은 방법같다.
+// 계산할바에 그냥 크게 잡고 시작하는 게 좋은 방법같다.
 // 천만짜리 배열을 잡고 시작하자. 알고리즘 완성 후 줄이는건 천천히 해도 될 듯.
 
-
+// 연구 기록
+/*
+	base	duration	memory
+	15000	1289		0
+	10000	1011		60005
+	7500	950			60005
+	5000	774			150020
+	3000	567			285065
+	2000	607			285065
+	1000	454			487754
+	500		387			792017
+	250		277			1249424
+	100		195			2978558
+*	50		164			4564943 <- 대체적인 최적값으로 보인다. //이 근처로 다른 값들을 시도해 볼 수는 있겠으나, 큰 의미는 없을 것으로 보인다.
+	25		183			7006904
+	10		303			10907945
+*/
+int base = 50;
 int ma[10] = { 4, 3, 2, 1, 0, }; //123
 int mb[10] = { 8 ,7, 6, 5, 0, }; //456
 int mr[10] = { 0, };
@@ -127,18 +145,18 @@ void simpleMul(int len, int* a, int* b, int* r) {
 void karasuba(int len, int* a, int* b, int* r) {
 	//input으로 최대길이 len 짜리 a, b를 받으면
 	//output으로 len*2짜리 r을 반환하는 함수
-	if (len <= 4) {
+	if (len <= base) {
 		simpleMul(len, a, b, r);
 		return;
 	}
-	int div = len / 2; //div가 자릿수다
+	int jari = len / 2;
 	int fLen = len / 2 + (len % 2); //front len -> 3 or 2 //len of 1 (a1, b1)
 	int bLen = len / 2; //back len //len of 0 (a0, b0)
 
 	//a = (a1 * div) + a0
-	int* a1 = div + a;
+	int* a1 = a + jari;
 	int* a0 = a;
-	int* b1 = div + b;
+	int* b1 = b + jari;
 	int* b0 = b;
 
 	//분할
@@ -165,13 +183,15 @@ void karasuba(int len, int* a, int* b, int* r) {
 	subtract(len, z1, z2, z1);			//z0는 그자리다.
 
 	//5.합산!
-	add(fLen * 2, z2, r + (div * 2));	//z2는 높은 자리수 2개를 곱한거니 2번 올라간다.
-	add(fLen * 2, z1, r + (div));		//z1은 높은 자리수 1개씩 곱한거니 1번 올라간다. //2차다항식의 중간값.
+	add(fLen * 2, z2, r + (jari * 2));	//z2는 높은 자리수 2개를 곱한거니 2번 올라간다.
+	add(fLen * 2, z1, r + (jari));		//z1은 높은 자리수 1개씩 곱한거니 1번 올라간다. //2차다항식의 중간값.
 	add(bLen * 2, z0, r);				//z0는 그자리다.
-	nomalize(len, r);
+	//nomalize(len, r);
 }
 
 int main() {
+	clock_t start, end;
+
 	printf("1234 * 5678 = %d\n", 1234 * 5678);
 	printf("12345 * 67891 = %d\n", 12345 * 67891);
 	karasuba(5, ma, mb, mr);
@@ -185,16 +205,19 @@ int main() {
 	nomalize(10, testr);
 	printRArray(10, testr);
 
-
-	int test100a[100] = { 0, };
-	int test100b[100] = { 0, };
-	int test100r[200] = { 0, };
-	for (int i = 0; i < 100; ++i) {
+	int test100a[15000] = { 0, };
+	int test100b[15000] = { 0, };
+	int test100r[30000] = { 0, };
+	for (int i = 0; i < 15000; ++i) {
 		test100a[i] = 5;
 		test100b[i] = 6;
 	}
-	karasuba(100, test100a, test100b, test100r);
-	nomalize(200, test100r);
-	printRArray(200, test100r);
+	start = clock();
+	karasuba(15000, test100a, test100b, test100r);
+	nomalize(30000, test100r);
+	end = clock();
+	printRArray(30000, test100r);
 	//printRArray(mIdx, memory);
+	printf("- %d\n ", mIdx);
+	printf("start = %d, end = %d, duraion= %d\n", start, end, end - start);
 }
