@@ -54,7 +54,7 @@ int mIdx = 0;
 
 int* getMemory(int i) {
 	int j = mIdx;
-	mIdx += (i + 1);
+	mIdx += (i + 2); //flen * 2 는 2자리를 먹을 수 있다.
 	return &memory[j];
 }
 
@@ -149,9 +149,9 @@ void karasuba(int len, int* a, int* b, int* r) {
 		simpleMul(len, a, b, r);
 		return;
 	}
-	int jari = len / 2;
+	int jari = len / 2; //시작점을 구분하는 상수값. 매우 크다.
 	int fLen = len / 2 + (len % 2); //front len -> 3 or 2 //len of 1 (a1, b1)
-	int bLen = len / 2; //back len //len of 0 (a0, b0)
+	int bLen = len / 2; //불필요. //back len //len of 0 (a0, b0)
 
 	//a = (a1 * div) + a0
 	int* a1 = a + jari;
@@ -179,8 +179,8 @@ void karasuba(int len, int* a, int* b, int* r) {
 	karasuba(fLen, a0a1, b0b1, z1); //길 수 있는 값 기준. //z1은 fLen의 2배 길이일 수 있다.
 
 	//4.중간값 역산
-	subtract(len, z1, z0, z1);
-	subtract(len, z1, z2, z1);			//z0는 그자리다.
+	subtract(fLen * 2, z1, z0, z1);
+	subtract(fLen * 2, z1, z2, z1);
 
 	//5.합산!
 	add(fLen * 2, z2, r + (jari * 2));	//z2는 높은 자리수 2개를 곱한거니 2번 올라간다.
@@ -189,35 +189,34 @@ void karasuba(int len, int* a, int* b, int* r) {
 	//nomalize(len, r);
 }
 
-//int main() {
-//	clock_t start, end;
-//
-//	printf("1234 * 5678 = %d\n", 1234 * 5678);
-//	printf("12345 * 67891 = %d\n", 12345 * 67891);
-//	karasuba(5, ma, mb, mr);
-//	nomalize(10, mr);
-//	printRArray(10, mr);
-//
-//	int test5a[5] = { 5, 4, 3, 2, 1 };
-//	int test5b[5] = { 1, 9, 8 ,7, 6 };
-//	int testr[10] = { 0, };
-//	karasuba(5, test5a, test5b, testr);
-//	nomalize(10, testr);
-//	printRArray(10, testr);
-//
-//	int test100a[15000] = { 0, };
-//	int test100b[15000] = { 0, };
-//	int test100r[30000] = { 0, };
-//	for (int i = 0; i < 15000; ++i) {
-//		test100a[i] = 5;
-//		test100b[i] = 6;
-//	}
-//	start = clock();
-//	karasuba(15000, test100a, test100b, test100r);
-//	nomalize(30000, test100r);
-//	end = clock();
-//	printRArray(30000, test100r);
-//	//printRArray(mIdx, memory);
-//	printf("- %d\n ", mIdx);
-//	printf("start = %d, end = %d, duraion= %d\n", start, end, end - start);
-//}
+int main() {
+	clock_t start, end;
+
+	printf("1234 * 5678 = %d\n", 1234 * 5678);
+	printf("12345 * 67891 = %d\n", 12345 * 67891);
+	karasuba(5, ma, mb, mr);
+	nomalize(10, mr);
+	printRArray(10, mr);
+
+	int test5a[5] = { 5, 4, 3, 2, 1 };
+	int test5b[5] = { 1, 9, 8 ,7, 6 };
+	int testr[10] = { 0, };
+	karasuba(5, test5a, test5b, testr);
+	nomalize(10, testr);
+	printRArray(10, testr);
+
+	int test100a[15000] = { 0, };
+	int test100b[15000] = { 0, };
+	int test100r[30000] = { 0, };
+	for (int i = 0; i < 15000; ++i) {
+		test100a[i] = 5;
+		test100b[i] = 6;
+	}
+	start = clock();
+	karasuba(15000, test100a, test100b, test100r);
+	nomalize(30000, test100r);
+	end = clock();
+	printRArray(30000, test100r);
+	printf("- %d\n ", mIdx);
+	printf("start = %d, end = %d, duraion= %d\n", start, end, end - start);
+}
