@@ -188,35 +188,35 @@ void karasuba(int len, int* a, int* b, int* r) {
 	add(bLen * 2, z0, r);				//z0는 그자리다.
 	//nomalize(len, r);
 }
-
-int main() {
-	clock_t start, end;
-
-	printf("1234 * 5678 = %d\n", 1234 * 5678);
-	printf("12345 * 67891 = %d\n", 12345 * 67891);
-	karasuba(5, ma, mb, mr);
-	nomalize(10, mr);
-	printRArray(10, mr);
-
-	int test5a[5] = { 5, 4, 3, 2, 1 };
-	int test5b[5] = { 1, 9, 8 ,7, 6 };
-	int testr[10] = { 0, };
-	karasuba(5, test5a, test5b, testr);
-	nomalize(10, testr);
-	printRArray(10, testr);
-
-	int test100a[15000] = { 0, };
-	int test100b[15000] = { 0, };
-	int test100r[30000] = { 0, };
-	for (int i = 0; i < 15000; ++i) {
-		test100a[i] = 5;
-		test100b[i] = 6;
-	}
-	start = clock();
-	karasuba(15000, test100a, test100b, test100r);
-	nomalize(30000, test100r);
-	end = clock();
-	printRArray(30000, test100r);
-	printf("- %d\n ", mIdx);
-	printf("start = %d, end = %d, duraion= %d\n", start, end, end - start);
-}
+//
+//int main() {
+//	clock_t start, end;
+//
+//	printf("1234 * 5678 = %d\n", 1234 * 5678);
+//	printf("12345 * 67891 = %d\n", 12345 * 67891);
+//	karasuba(5, ma, mb, mr);
+//	nomalize(10, mr);
+//	printRArray(10, mr);
+//
+//	int test5a[5] = { 5, 4, 3, 2, 1 };
+//	int test5b[5] = { 1, 9, 8 ,7, 6 };
+//	int testr[10] = { 0, };
+//	karasuba(5, test5a, test5b, testr);
+//	nomalize(10, testr);
+//	printRArray(10, testr);
+//
+//	int test100a[15000] = { 0, };
+//	int test100b[15000] = { 0, };
+//	int test100r[30000] = { 0, };
+//	for (int i = 0; i < 15000; ++i) {
+//		test100a[i] = 5;
+//		test100b[i] = 6;
+//	}
+//	start = clock();
+//	karasuba(15000, test100a, test100b, test100r);
+//	nomalize(30000, test100r);
+//	end = clock();
+//	printRArray(30000, test100r);
+//	printf("- %d\n ", mIdx);
+//	printf("start = %d, end = %d, duraion= %d\n", start, end, end - start);
+//}
