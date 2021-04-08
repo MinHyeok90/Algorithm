@@ -68,7 +68,8 @@ void kara(int len, int* a, int* b, int* r) {
 
 	int jari = len / 2;
 	int flen = len / 2 + (len % 2); //len 이 아닌   jari 를 더하는 실수.
-	// int blen = len / 2;  //blen과 flen을 구분하지 않고 flen으로만 계산해도 가능하다.
+	// int blen = len / 2;
+        int rlen = flen * 2;
 
 	int* a1 = a + jari;
 	int* a0 = a;
@@ -86,7 +87,7 @@ void kara(int len, int* a, int* b, int* r) {
 	int* a0a1 = getMemo(flen * 2);
 	int* b0b1 = getMemo(flen * 2);
 	add2(flen, a1, a0a1);
-	add2(flen, a0, a0a1); // 여긴 blan 이여야만 할 것 같다
+	add2(flen, a0, a0a1); // 여긴 blen 이여야만 할 것 같다
 	add2(flen, b1, b0b1);
 	add2(flen, b0, b0b1);
 
