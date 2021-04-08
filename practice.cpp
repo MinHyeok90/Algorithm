@@ -1,5 +1,5 @@
 /*
-	ÀÌ ÆÄÀÏÀº 10ºĞ ÄÚµùÀ» ¿¬½ÀÇÏ´Â °ø°£ÀÔ´Ï´Ù.
+	ì´ íŒŒì¼ì€ 10ë¶„ ì½”ë”©ì„ ì—°ìŠµí•˜ëŠ” ê³µê°„ì…ë‹ˆë‹¤.
 */
 #include <stdio.h>
 #include <time.h>
@@ -13,7 +13,7 @@ int midx = 0;
 
 int* getMemo(int i) {
 	int j = midx;
-	midx += (i + 2); // + 1 Àº carry, +1Àº flen *2 ÀÇ ÆĞµù
+	midx += (i + 2); // + 1 ì€ carry, +1ì€ flen *2 ì˜ íŒ¨ë”©
 	return &memo[j];
 }
 
@@ -67,8 +67,8 @@ void kara(int len, int* a, int* b, int* r) {
 	}
 
 	int jari = len / 2;
-	int flen = len / 2 + (len % 2); //len ÀÌ ¾Æ´Ñ   jari ¸¦ ´õÇÏ´Â ½Ç¼ö.
-	// int blen = len / 2;  //blen°ú flenÀ» ±¸ºĞÇÏÁö ¾Ê°í flenÀ¸·Î¸¸ °è»êÇØµµ °¡´ÉÇÏ´Ù.
+	int flen = len / 2 + (len % 2); //len ì´ ì•„ë‹Œ   jari ë¥¼ ë”í•˜ëŠ” ì‹¤ìˆ˜.
+	// int blen = len / 2;  //blenê³¼ flenì„ êµ¬ë¶„í•˜ì§€ ì•Šê³  flenìœ¼ë¡œë§Œ ê³„ì‚°í•´ë„ ê°€ëŠ¥í•˜ë‹¤.
 
 	int* a1 = a + jari;
 	int* a0 = a;
@@ -86,17 +86,17 @@ void kara(int len, int* a, int* b, int* r) {
 	int* a0a1 = getMemo(flen * 2);
 	int* b0b1 = getMemo(flen * 2);
 	add2(flen, a1, a0a1);
-	add2(flen, a0, a0a1);
+	add2(flen, a0, a0a1); // ì—¬ê¸´ blan ì´ì—¬ì•¼ë§Œ í•  ê²ƒ ê°™ë‹¤
 	add2(flen, b1, b0b1);
 	add2(flen, b0, b0b1);
 
 	kara(flen, a0a1, b0b1, z1);
 
-	//lenÀÌ Æ²·È¾ú´Ù.
+	//lenì´ í‹€ë ¸ì—ˆë‹¤.
 	subtract2(flen * 2, z1, z0, z1);
 	subtract2(flen * 2, z1, z2, z1);
 
-	//º¹ºÙÀ» ÇÏ´Ùº¸´Ï z2, z1, z0 ¸¦ º¯°æÇØÁÖÁö ¾Ê¾Ò¾ú´Ù.
+	//ë³µë¶™ì„ í•˜ë‹¤ë³´ë‹ˆ z2, z1, z0 ë¥¼ ë³€ê²½í•´ì£¼ì§€ ì•Šì•˜ì—ˆë‹¤.
 	add2(flen * 2, z2, r + (jari * 2));
 	add2(flen * 2, z1, r + (jari));
 	add2(flen * 2, z0, r);
