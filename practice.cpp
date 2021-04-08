@@ -64,39 +64,37 @@ void kara(int len, int* a, int* b, int* r) {
 		return;
 	}
 
-	int jari = len / 2;
-	int flen = len / 2 + (len % 2);
-	int blen = len / 2; //z0 °ö¼À, add a0 and b0, z0 µ¡¼À -> 4È¸
-	int rlen = flen * 2; //z2, z1 ,z0 ¸Ş¸ğ¸® ÇÒ´ç, z1»¬¼À , z2, z1 µ¡¼À -> 7È¸
-
-	int* a1 = a + jari;
-	int* a0 = a;
-	int* b1 = b + jari;
-	int* b0 = b;
+	int div = len / 2;
+	int flen = div + (len % 2);
+	int blen = div;
+	int rlen = flen * 2;
 
 	int* z2 = getMemo(rlen);
 	int* z1 = getMemo(rlen);
 	int* z0 = getMemo(rlen);
-	int* a0a1 = getMemo(flen);
-	int* b0b1 = getMemo(flen);
+	int* a1a0 = getMemo(flen);
+	int* b1b0 = getMemo(flen);
+
+	int* a1 = a + div;
+	int* a0 = a;
+	int* b1 = b + div;
+	int* b0 = b;
 
 	kara(flen, a1, b1, z2);
 	kara(blen, a0, b0, z0);
 
-	addp(blen, a0, a0a1);
-	addp(flen, a1, a0a1);
-	addp(blen, b0, b0b1);
-	addp(flen, b1, b0b1);
+	addp(flen, a1, a1a0);
+	addp(blen, a0, a1a0);
+	addp(flen, b1, b1b0);
+	addp(blen, b0, b1b0);
+	kara(flen, a1a0, b1b0, z1);
 
-	kara(flen, a0a1, b0b1, z1);
-
-	subp(rlen, z1, z0, z1);
 	subp(rlen, z1, z2, z1);
+	subp(rlen, z1, z0, z1);
 
-	addp(rlen, z2, r + jari * 2);
-	addp(rlen, z1, r + jari);
+	addp(rlen, z2, r + div * 2);
+	addp(rlen, z1, r + div);
 	addp(blen * 2, z0, r);
-
 }
 
 int main() {
