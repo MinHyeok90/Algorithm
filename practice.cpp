@@ -73,8 +73,8 @@ void kara(int len, int* a, int* b, int* r) {
 	int* b1 = b + div;
 	int* b0 = b;
 
-	int* a0a1 = getMemo(flen);
-	int* b0b1 = getMemo(flen);
+	int* a1a0 = getMemo(flen);
+	int* b1b0 = getMemo(flen);
 	int* z2 = getMemo(rlen);
 	int* z1 = getMemo(rlen);
 	int* z0 = getMemo(rlen);
@@ -82,20 +82,20 @@ void kara(int len, int* a, int* b, int* r) {
 	kara(flen, a1, b1, z2);
 	kara(blen, a0, b0, z0);
 
-	addp(flen, a1, a0a1);
-	addp(blen, a0, a0a1);
-	addp(flen, b1, b0b1);
-	addp(blen, b0, b0b1);
+	addp(flen, a1, a1a0);
+	addp(blen, a0, a1a0);
+	addp(flen, b1, b1b0);
+	addp(blen, b0, b1b0);
 
-	kara(flen, a0a1, b0b1, z1);
-	subp(rlen, z1, z0, z1);
+	kara(flen, a1a0, b1b0, z1);
+
 	subp(rlen, z1, z2, z1);
+	subp(rlen, z1, z0, z1);
 
-	addp(rlen, z2, r + div * 2);
+	addp(rlen, z2, r + div * 2); //a 에 더하는 실수를 했다. 최종 결과는 r에다가 저장해야지
 	addp(rlen, z1, r + div);
 	addp(blen * 2, z0, r);
 }
-
 
 int main() {
 	clock_t start, end;
