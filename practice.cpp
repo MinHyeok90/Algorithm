@@ -68,35 +68,33 @@ void kara(int len, int* a, int* b, int* r) {
 	int blen = div;
 	int rlen = flen * 2;
 
-	int* z2 = getMemo(rlen);
-	int* z1 = getMemo(rlen);
-	int* z0 = getMemo(rlen);
-
 	int* a1 = a + div;
 	int* a0 = a;
 	int* b1 = b + div;
 	int* b0 = b;
 
-	int* a1ao = getMemo(flen);
-	int* b1bo = getMemo(flen);
+	int* z2 = getMemo(rlen);
+	int* z1 = getMemo(rlen);
+	int* z0 = getMemo(rlen);
+	int* a1a0 = getMemo(flen); //blen으로 하면, nomalize 때 깨진다.
+	int* b1b0 = getMemo(flen);
 
 	kara(flen, a1, b1, z2);
-	kara(blen, a0, b0, z0);
+	kara(blen, a0, b0, z0); //z0 는 뒷자리 계산이므로 flen이 아닌 blen을 써야 한다.
 
-	addp(flen, a1, a1ao);
-	addp(blen, a0, a1ao); // 덧셈 결과 저장소를 a가 아닌 잘못 선택하는 실수
-	addp(flen, b1, b1bo); // 덧셈 결과 저장소를 b가 아닌 잘못 선택하는 실수.
-	addp(blen, b0, b1bo);
-	kara(flen, a1ao, b1bo, z1);
+	addp(flen, a1, a1a0);
+	addp(blen, a0, a1a0);
+	addp(flen, b1, b1b0);
+	addp(blen, b0, b1b0);
 
+	kara(flen, a1a0, b1b0, z1);
 	subp(rlen, z1, z0, z1);
 	subp(rlen, z1, z2, z1);
 
 	addp(rlen, z2, r + div * 2);
 	addp(rlen, z1, r + div);
 	addp(blen * 2, z0, r);
-
-}
+;}
 
 int main() {
 	clock_t start, end;
