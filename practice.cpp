@@ -11,10 +11,10 @@ int test100r[30000] = { 0, };
 int memo[10000000] = { 0, };
 int midx = 0;
 
-int* getMemo(int i) {
+int* getm(int i) {
 	int j = midx;
 	midx += i;
-	return &memo[j]; //j를 받는 이유는 j값을 이용해야 하기 때문이다..
+	return &memo[j];
 }
 
 void printRArrayp(int len, int* a) {
@@ -26,7 +26,7 @@ void printRArrayp(int len, int* a) {
 
 void nomalizep(int len, int* a) {
 	for (int i = 0; i < len; ++i) {
-		if (a[i] < 0) {
+		if (a[i] < 0) { //0보다 작을 때, 음수를 확인할때 사용하는거다 10이 아니라.
 			int b = (-a[i] + 9) / 10;
 			a[i + 1] -= b;
 			a[i] += (b * 10);
@@ -44,25 +44,25 @@ void addp(int len, int* a, int* r) {
 	}
 }
 
-void subp(int len, int* a, int* b, int* r) {
+void subp(int len, int* a, int* b) {
 	for (int i = 0; i < len; ++i) {
-		r[i] = a[i] - b[i];
+		a[i] -= b[i];
 	}
 }
 
 void multip(int len, int* a, int* b, int* r) {
 	for (int i = 0; i < len; ++i) {
 		for (int j = 0; j < len; ++j) {
-			r[i + j] += a[j] * b[i];
+			r[i + j] += a[j] * b[i];  //r[i + j] 는 계속 더해져야 하는 값이다. = 아니라 += 이다. //같은실수 2번째인데, multi 는 i+j만 +지, a, b는 곱셉이야...
 		}
 	}
 }
+
 
 void kara(int len, int* a, int* b, int* r) {
 	if (len <= 50) {
 		return multip(len, a, b, r);
 	}
-
 	int div = len / 2;
 	int flen = div + len % 2;
 	int blen = div;
@@ -73,29 +73,30 @@ void kara(int len, int* a, int* b, int* r) {
 	int* b1 = b + div;
 	int* b0 = b;
 
-	int* z2 = getMemo(rlen);
-	int* z1 = getMemo(rlen);
-	int* z0 = getMemo(rlen);
-	int* a01 = getMemo(flen);
-	int* b01 = getMemo(flen);
+	int* z2 = getm(rlen);
+	int* z1 = getm(rlen);
+	int* z0 = getm(rlen);
+	int* a10 = getm(flen);
+	int* b10 = getm(flen);
 
 	kara(flen, a1, b1, z2);
 	kara(blen, a0, b0, z0);
 
-	addp(flen, a1, a01);
-	addp(blen, a0, a01);
-	addp(flen, b1, b01);
-	addp(blen, b0, b01);
+	addp(flen, a1, a10);
+	addp(blen, a0, a10); //flen 과 blen을 햇갈리는건 너무했다...
+	addp(flen, b1, b10);
+	addp(blen, b0, b10);
 
-	kara(flen, a01, b01, z1);
-	subp(rlen, z1, z0, z1);
-	subp(rlen, z1, z2, z1);
+	kara(flen, a10, b10, z1);
+	subp(rlen, z1, z0);
+	subp(rlen, z1, z2);
 
 	addp(rlen, z2, r + div * 2);
 	addp(rlen, z1, r + div);
 	addp(blen * 2, z0, r);
 
 }
+
 
 int main() {
 	clock_t start, end;
