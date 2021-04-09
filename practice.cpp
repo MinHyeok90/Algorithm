@@ -76,11 +76,11 @@ void kara(int len, int* a, int* b, int* r) {
 	int* z2 = getMemo(rlen);
 	int* z1 = getMemo(rlen);
 	int* z0 = getMemo(rlen);
-	int* a1a0 = getMemo(flen); //blen으로 하면, nomalize 때 깨진다.
+	int* a1a0 = getMemo(flen);
 	int* b1b0 = getMemo(flen);
 
 	kara(flen, a1, b1, z2);
-	kara(blen, a0, b0, z0); //z0 는 뒷자리 계산이므로 flen이 아닌 blen을 써야 한다.
+	kara(blen, a0, b0, z0);
 
 	addp(flen, a1, a1a0);
 	addp(blen, a0, a1a0);
@@ -88,13 +88,15 @@ void kara(int len, int* a, int* b, int* r) {
 	addp(blen, b0, b1b0);
 
 	kara(flen, a1a0, b1b0, z1);
-	subp(rlen, z1, z0, z1);
+
 	subp(rlen, z1, z2, z1);
+	subp(rlen, z1, z0, z1);
 
 	addp(rlen, z2, r + div * 2);
 	addp(rlen, z1, r + div);
 	addp(blen * 2, z0, r);
-;}
+
+}
 
 int main() {
 	clock_t start, end;
