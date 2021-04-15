@@ -10,30 +10,30 @@ int test100r[30000] = { 0, };
 
 int memo[10000000] = { 0, };
 int midx = 0;
-
 int* getm(int i) {
 	int j = midx;
 	midx += i;
 	return &memo[j];
 }
 
-void printRArrayp(int len, int* a) {
+void printRA(int len, int *r) {
 	for (int i = len - 1; i >= 0; --i) {
-		printf("%d", a[i]);
+		printf("%d", r[i]);
 	}
 	printf("\n");
+
 }
 
-void nomalizep(int len, int* a) {
+void nomalizep(int len, int* r) {
 	for (int i = 0; i < len; ++i) {
-		if (a[i] < 0) {
-			int b = (-a[i] + 9) / 10;
-			a[i + 1] -= b;
-			a[i] += (b * 10);
+		if (r[i] < 0) {
+			int b = (-r[i] + 9) / 10;
+			r[i + 1] -= b;
+			r[i] += b * 10;
 		}
-		else if (a[i] >= 10) {
-			a[i + 1] += a[i] / 10;
-			a[i] %= 10;
+		else if (r[i] >= 10) {
+			r[i + 1] += r[i] / 10;
+			r[i] %= 10;
 		}
 	}
 }
@@ -50,7 +50,7 @@ void subp(int len, int* a, int* b) {
 	}
 }
 
-void multip(int len, int* a, int* b, int* r) {
+void mulp(int len, int* a, int* b, int *r) {
 	for (int i = 0; i < len; ++i) {
 		for (int j = 0; j < len; ++j) {
 			r[i + j] += a[j] * b[i];
@@ -60,7 +60,7 @@ void multip(int len, int* a, int* b, int* r) {
 
 void kara(int len, int* a, int* b, int* r) {
 	if (len <= 50) {
-		return multip(len, a, b, r);
+		return mulp(len, a, b, r);
 	}
 
 	int div = len / 2;
@@ -73,27 +73,29 @@ void kara(int len, int* a, int* b, int* r) {
 	int* b1 = b + div;
 	int* b0 = b;
 
+	int* a10 = getm(flen);
+	int* b10 = getm(flen);
 	int* z2 = getm(rlen);
 	int* z1 = getm(rlen);
 	int* z0 = getm(rlen);
-	int* a10 = getm(flen);
-	int* b10 = getm(flen);
+
+	kara(flen, a1, b1, z2);
+	kara(blen, a0, b0, z0);
 
 	addp(flen, a1, a10);
 	addp(blen, a0, a10);
 	addp(flen, b1, b10);
 	addp(blen, b0, b10);
 
-	kara(flen, a1, b1, z2);
-	kara(blen, a0, b0, z0);
 	kara(flen, a10, b10, z1);
-	subp(rlen, z1, z0);
 	subp(rlen, z1, z2);
+	subp(rlen, z1, z0);
 
-	addp(rlen, z2, r + div *2);
+	addp(rlen, z2, r + div * 2);
 	addp(rlen, z1, r + div);
 	addp(blen * 2, z0, r);
 }
+
 
 
 int main() {
@@ -119,7 +121,7 @@ int main() {
 	kara(size, test100a, test100b, test100r);
 	nomalizep(size*2, test100r);
 	end = clock();
-	printRArrayp(size*2, test100r);
+	printRA(size*2, test100r);
 	printf("- %d\n ", midx);
 	printf("start = %d, end = %d, duraion= %d\n", start, end, end - start);
 }
