@@ -6,3 +6,7 @@ int hash(char c[]) {
     for (int i = 0; c[i]; i++) ans = (p * ans + c[i]) % mod;
     return ans;
 }
+
+int isSame(char a[], char b[]) {
+    return hash(a) == hash(b);
+}
