@@ -41,7 +41,7 @@ void ms(int data[], int p, int r){
     int q;
     // 1개짜리는 p==r 이다. 따라서 p < r 조건덕분에 말단 배열 1개짜리는 넘어간다. 
     if (p < r) {
-        q = (p+r)/2;
+        q = (p+r)/2; //p는 언제나 r보다 작으며 /2로 나누므로 절대 r을 넘어가지 않는다. (1/2==0)
         ms(data,p ,q);
         ms(data,q+1,r);
         merge(data, p, q, r);
