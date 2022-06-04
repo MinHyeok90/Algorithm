@@ -44,7 +44,7 @@ void ms(int data[], int p, int r){
         q = (p+r)/2; //p는 언제나 r보다 작으며 /2로 나누므로 절대 r을 넘어가지 않는다. (1/2==0)
         ms(data,p ,q);
         ms(data,q+1,r);
-        merge(data, p, q, r);
+        merge(data, p, q, r); //q를 날리는 이유는 p~q까지의 첫번째 배열범위를 알기 위해서이다. 두번째 배열은 q+1부터~r까지임을 알 수 있다
     }
 }
 
