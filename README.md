@@ -14,6 +14,6 @@ int a() {
 문제에서 주어지는 메모리 제한이 512MB라고 할 때 대략 int 1.2억개 정도의 배열을 잡을 수 있고
 실제로 BOJ에 int a[10000000]; 배열을 전역에 잡든 지역에 잡든 제출해보면 잘 됩니다.
 윈도우 Visual Studio에서 int a[100][10000];을 지역변수로 잡아서 실행해보면 stack 영역의 메모리 제한을 넘겨서 런타임 에러가 발생합니다
-# https://www.acmicpc.net/board/view/64702
+https://www.acmicpc.net/board/view/64702
 
 256M가 제한이라면 약 6천만까지가 제약일 것
